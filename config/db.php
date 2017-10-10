@@ -2,8 +2,8 @@
 
 return [
     'class' => 'yii\db\Connection',
-    'dsn' => 'mysql:host=localhost;dbname=yii2basic',
-    'username' => 'root',
-    'password' => '',
+    'dsn' => 'mysql:host=mysql;dbname=video-parser',
+    'username' => 'video-parser',
+    'password' => 'video-parser',
     'charset' => 'utf8',
 ];
