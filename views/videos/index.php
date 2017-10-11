@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\VideosSearch */
@@ -24,10 +25,16 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'resource_type',
             'title',
             'description',
-            'image',
+            [
+                'attribute' => 'image',
+                'format' => 'raw',
+                'value' => function ($model) {
+                    return "<a href=" . Url::to(['/videos/view', "id" => $model->id]) .
+                        "><img width='300px' src=\"{$model->image}\"></img></a>";
+                },
+            ],
             // 'video_id',
 
             ['class' => 'yii\grid\ActionColumn'],

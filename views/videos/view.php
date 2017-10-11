@@ -28,11 +28,17 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'resource_type',
             'title',
             'description',
             'image',
             'video_id',
+            [
+                'label'  => 'Embedded',
+                'format'=>'raw',
+                'value'  => function ($data) {
+                    return "<iframe width=\"720\" height=\"405\" src=\"{$data->getResource()->embedded_url}{$data->video_id}\"></iframe>";
+                }
+            ],
         ],
     ]) ?>
 

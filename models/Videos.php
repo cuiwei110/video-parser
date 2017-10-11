@@ -112,15 +112,15 @@ class Videos extends \yii\db\ActiveRecord
     {
         $client = new Client();
         // Send GET-request to page with video.
-        $res = $client->request('GET', $this->videoURL);
-        // Get data between body-tags.
-        $body = $res->getBody();
+        $res = file_get_contents($this->videoURL);
         // Include phpQuery.
-        $document = \phpQuery::newDocumentHTML($body);
+        $document = \phpQuery::newDocumentHTML($res);
         //Find and get title
         $this->title = $document->find($this->getResource()->title_selector)->text();
+        //Find and get description
         $this->description = $document->find($this->getResource()->description_selector)->text();
-        $this->image = $this->getThumb();
+        //Find and get image link
+        $this->image = $document->find($this->getResource()->image_selector)->attr('content');
 
         return parent::save();
     }
@@ -134,6 +134,8 @@ class Videos extends \yii\db\ActiveRecord
     }
 
     /**
+     * Get resource model.
+     *
      * @return Resources|array|bool|int
      */
     public function getResource()
@@ -149,11 +151,14 @@ class Videos extends \yii\db\ActiveRecord
             return false;
 
         $this->resource = $resource->one();
+        $this->resource_type = $this->resource->id;
 
         return $this->resource;
     }
 
     /**
+     * Parse URL of video and get id.
+     *
      * @return string
      */
     public function getIdByUrl()
@@ -165,7 +170,11 @@ class Videos extends \yii\db\ActiveRecord
                     $this->video_id = (string)$vars[$this->resource->id_parameter];
                 }
             } else {
-                $this->video_id = (string)parse_url($this->videoURL, PHP_URL_PATH);
+                $arr = explode('/', parse_url($this->videoURL, PHP_URL_PATH));
+                if (empty(end($arr))) {
+                    unset($arr[count($arr) - 1]);
+                }
+                $this->video_id = end($arr);
             }
         }
 

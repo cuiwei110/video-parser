@@ -15,11 +15,11 @@ class m171011_023704_create_videos_table extends Migration
         $this->createTable('videos', [
             'id' => $this->primaryKey(),
             'resource_type' => $this->integer(),
-            'title' => $this->string(),
-            'description' => $this->string(),
+            'title' => $this->string(400),
+            'description' => $this->string(1000),
             'image' => $this->string(),
             'video_id' => $this->string()
-        ]);
+        ], 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB');
 
         $this->createIndex(
             'idx-videos-resource_type',
@@ -42,7 +42,7 @@ class m171011_023704_create_videos_table extends Migration
      */
     public function safeDown()
     {
-        $this->dropIndex(
+        $this->dropForeignKey(
             'fk-videos-resource_type',
             '{{%videos}}'
         );

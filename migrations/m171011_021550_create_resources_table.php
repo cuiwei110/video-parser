@@ -19,7 +19,7 @@ class m171011_021550_create_resources_table extends Migration
             'description_selector' => $this->string(),
             'embedded_url' => $this->string(),
             'example_url' => $this->string(),
-        ]);
+        ], 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB');
     }
 
     /**
