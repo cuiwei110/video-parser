@@ -23,7 +23,7 @@ DIRECTORY STRUCTURE
 REQUIREMENTS
 ------------
 ~~~
-PHP >= 5.4.0.
+PHP >= 5.6.
 Composer 1.5.2
 Docker >= 1.13.0+
 Docker-compose >= 1.10.0
@@ -38,17 +38,27 @@ $ cd project_name
 
 $ git clone https://github.com/ilusha2012/video-parser .
 
+#Start containers
+$ docker-compose up -d
+
+#Install Composer
+$ docker-compose exec php-fpm php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+$ docker-compose exec php-fpm php  composer-setup.php
+$ docker-compose exec php-fpm php -r "unlink('composer-setup.php');"
+
+#Install vendors
 $ php composer.phar global require "fxp/composer-asset-plugin:^1.3.1"
 $ php composer.phar install
+
+$ chmod 777 web/assets/
 ~~~
 
 
 START
 -------------
 
-### By Docker
+### Run migrations
 ```bash
-$ docker-compose up -d
 $ docker-compose exec php-fpm php yii migrate
 ```
 Application be available from
