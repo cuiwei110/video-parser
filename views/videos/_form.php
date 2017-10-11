@@ -18,6 +18,11 @@ use yii\widgets\ActiveForm;
         <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
 
+    Supported:
+    <?php foreach ($resources as $resource) : ?>
+        <br><b><?= $resource->name ?></b><br>
+        Example url - <?= $resource->example_url ?><br>
+    <?php endforeach; ?>
 
     <?php ActiveForm::end(); ?>
 

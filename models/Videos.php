@@ -111,9 +111,9 @@ class Videos extends \yii\db\ActiveRecord
     public function save($runValidation = true, $attributeNames = null)
     {
         $client = new Client();
-        // Send GET-request to page with video.
+        //Send GET-request to page with video.
         $res = file_get_contents($this->videoURL);
-        // Include phpQuery.
+        //Include phpQuery
         $document = \phpQuery::newDocumentHTML($res);
         //Find and get title
         $this->title = $document->find($this->getResource()->title_selector)->text();

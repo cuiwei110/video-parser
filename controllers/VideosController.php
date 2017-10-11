@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\Resources;
 use Yii;
 use app\models\Videos;
 use app\models\VideosSearch;
@@ -68,8 +69,10 @@ class VideosController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
+            $resources = Resources::find()->all();
             return $this->render('create', [
                 'model' => $model,
+                'resources' => $resources
             ]);
         }
     }

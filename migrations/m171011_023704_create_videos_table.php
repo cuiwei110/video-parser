@@ -33,7 +33,7 @@ class m171011_023704_create_videos_table extends Migration
             "resource_type",
             "{{%resources}}",
             "id",
-            'RESTRICT');
+            'CASCADE');
 
     }
 

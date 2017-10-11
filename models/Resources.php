@@ -13,6 +13,7 @@ use Yii;
  * @property string $description_selector
  * @property string $embedded_url
  * @property string $example_url
+ * @property string $image_selector
  */
 class Resources extends \yii\db\ActiveRecord
 {
