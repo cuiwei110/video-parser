@@ -4,19 +4,19 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 
 /* @var $this yii\web\View */
-/* @var $searchModel app\models\ResourcesSearch */
+/* @var $searchModel app\models\VideosSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Resources';
+$this->title = 'Videos';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="resources-index">
+<div class="videos-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('Create Resources', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Create Videos', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -24,11 +24,11 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'name',
-            'title_selector',
-            'description_selector',
-            'embedded_url:url',
-            // 'example_url:url',
+            'resource_type',
+            'title',
+            'description',
+            'image',
+            // 'video_id',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

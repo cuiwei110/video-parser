@@ -40,6 +40,7 @@ AppAsset::register($this);
         'items' => [
             ['label' => 'Home', 'url' => ['/site/index']],
             ['label' => 'Resources', 'url' => ['/resources/index']],
+            ['label' => 'Videos', 'url' => ['/videos/index']],
         ],
     ]);
     NavBar::end();
