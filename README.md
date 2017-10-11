@@ -36,7 +36,7 @@ INSTALLATION
 $ mkdir project_name
 $ cd project_name
 
-$ git clone blablabla .
+$ git clone https://github.com/ilusha2012/video-parser .
 
 $ php composer.phar global require "fxp/composer-asset-plugin:^1.3.1"
 $ php composer.phar install
