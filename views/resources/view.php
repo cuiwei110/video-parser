@@ -33,6 +33,8 @@ $this->params['breadcrumbs'][] = $this->title;
             'description_selector',
             'embedded_url:url',
             'example_url:url',
+            'id_parameter',
+            'image_selector',
         ],
     ]) ?>
 

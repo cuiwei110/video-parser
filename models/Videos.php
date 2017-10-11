@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use GuzzleHttp\Client;
 use Yii;
 
 /**
@@ -18,6 +19,11 @@ use Yii;
  */
 class Videos extends \yii\db\ActiveRecord
 {
+
+    public $videoURL;
+
+    public $resource;
+
     /**
      * @inheritdoc
      */
@@ -32,10 +38,37 @@ class Videos extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['resource_type'], 'integer'],
-            [['title', 'description', 'image', 'video_id'], 'string', 'max' => 255],
-            [['resource_type'], 'exist', 'skipOnError' => true, 'targetClass' => Resources::className(), 'targetAttribute' => ['resource_type' => 'id']],
+            [['videoURL'], 'required'],
+            [['videoURL'], 'url'],
+            [['videoURL'], 'validateResource'],
+            [['videoURL'], 'validateIdResource'],
+            [['title', 'description', 'image', 'video_id'], 'string'],
+            [['resource', 'resource_type', 'title', 'description', 'image', 'video_id'], 'safe']
         ];
+    }
+
+    /**
+     * @param $attribute
+     * @param $params
+     * @param $validator
+     */
+    public function validateResource($attribute, $params, $validator)
+    {
+        if (!$this->getResource()) {
+            $this->addError($attribute, 'This service is not supported.');
+        }
+    }
+
+    /**
+     * @param $attribute
+     * @param $params
+     * @param $validator
+     */
+    public function validateIdResource($attribute, $params, $validator)
+    {
+        if (!$this->getIdByUrl()) {
+            $this->addError($attribute, 'We do not find id of video.');
+        }
     }
 
     /**
@@ -68,5 +101,74 @@ class Videos extends \yii\db\ActiveRecord
     public static function find()
     {
         return new VideosQuery(get_called_class());
+    }
+
+    /**
+     * @param bool $runValidation
+     * @param null $attributeNames
+     * @return bool
+     */
+    public function save($runValidation = true, $attributeNames = null)
+    {
+        $client = new Client();
+        // Send GET-request to page with video.
+        $res = $client->request('GET', $this->videoURL);
+        // Get data between body-tags.
+        $body = $res->getBody();
+        // Include phpQuery.
+        $document = \phpQuery::newDocumentHTML($body);
+        //Find and get title
+        $this->title = $document->find($this->getResource()->title_selector)->text();
+        $this->description = $document->find($this->getResource()->description_selector)->text();
+        $this->image = $this->getThumb();
+
+        return parent::save();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getThumb()
+    {
+        return str_replace('{id}', $this->video_id, $this->getResource()->image_selector);
+    }
+
+    /**
+     * @return Resources|array|bool|int
+     */
+    public function getResource()
+    {
+        if ($this->resource_type) {
+            $resource = Resources::find()->where(['id' => $this->resource_type]);
+        } else {
+            $host = parse_url($this->videoURL, PHP_URL_HOST);
+            $resource = Resources::find()->where(['LIKE', 'example_url', "{$host}"]);
+        }
+
+        if (!$resource->exists())
+            return false;
+
+        $this->resource = $resource->one();
+
+        return $this->resource;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIdByUrl()
+    {
+        if (!$this->video_id) {
+            if ($this->resource->id_parameter) {
+                parse_str(parse_url($this->videoURL, PHP_URL_QUERY), $vars);
+                if (isset($vars[$this->resource->id_parameter])) {
+                    $this->video_id = (string)$vars[$this->resource->id_parameter];
+                }
+            } else {
+                $this->video_id = (string)parse_url($this->videoURL, PHP_URL_PATH);
+            }
+        }
+
+        return $this->video_id;
     }
 }

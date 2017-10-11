@@ -22,6 +22,10 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'example_url')->textInput(['maxlength' => true]) ?>
 
+    <?= $form->field($model, 'image_selector')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'id_parameter')->textInput(['maxlength' => true]) ?>
+
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>

@@ -28,7 +28,9 @@ $this->params['breadcrumbs'][] = $this->title;
             'title_selector',
             'description_selector',
             'embedded_url:url',
-            // 'example_url:url',
+            'example_url:url',
+            'id_parameter',
+            'image_selector',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

@@ -49,6 +49,7 @@ START
 ### By Docker
 ```bash
 $ docker-compose up -d
+$ docker-compose exec php-fpm php yii migrate
 ```
 Application be available from
 ```

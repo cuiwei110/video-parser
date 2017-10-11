@@ -32,7 +32,8 @@ class Resources extends \yii\db\ActiveRecord
         return [
             [['name', 'title_selector', 'description_selector', 'embedded_url', 'example_url'], 'required'],
             [['embedded_url', 'example_url'], 'url'],
-            [['name', 'title_selector', 'description_selector', 'embedded_url', 'example_url'], 'string', 'max' => 255],
+            [['name', 'title_selector', 'description_selector',
+                'embedded_url', 'example_url', 'id_parameter', 'image_selector'], 'string', 'max' => 255],
         ];
     }
 
