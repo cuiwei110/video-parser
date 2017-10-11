@@ -126,14 +126,6 @@ class Videos extends \yii\db\ActiveRecord
     }
 
     /**
-     * @return mixed
-     */
-    public function getThumb()
-    {
-        return str_replace('{id}', $this->video_id, $this->getResource()->image_selector);
-    }
-
-    /**
      * Get resource model.
      *
      * @return Resources|array|bool|int
